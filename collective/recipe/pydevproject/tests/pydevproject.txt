@@ -22,12 +22,13 @@ the resulting config should include both their paths::
     ... python_interpreter = Default
     ... eggs = eggstub.main
     ... """ % globals())
+
     >>> out = system(join('bin', 'buildout'))
     >>> print out[out.find('Develop:'):]
     Develop: '.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.main'
     Develop: '.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.dep'
     Installing pydevproject.
-    ...
+
     >>> cat('.project')
     <?xml version="1.0" encoding="UTF-8"?>
     <projectDescription>
@@ -46,6 +47,7 @@ the resulting config should include both their paths::
         	<nature>org.python.pydev.pythonNature</nature>
         </natures>
     </projectDescription>
+
     >>> cat('.pydevproject')
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <?eclipse-pydev version="1.0"?><pydev_project>
@@ -55,7 +57,8 @@ the resulting config should include both their paths::
     <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.7</pydev_property>
     <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
     <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
-    <path>.../collective.recipe.ropeproject/collective/recipe/ropeproject/tests/eggstub.main/src</path>
-    <path>.../collective.recipe.ropeproject/collective/recipe/ropeproject/tests/eggstub.dep/src</path>
+    <path>.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.main/src</path>
+    <path>.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.dep/src</path>
+    <path>.../dist-packages</path>
     </pydev_pathproperty>
     </pydev_project>

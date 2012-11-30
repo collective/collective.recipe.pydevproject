@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import logging, os, zc.buildout
+import zc.buildout
 import zc.recipe.egg
-import shutil
 
 
 class Recipe:
@@ -13,13 +12,41 @@ class Recipe:
     def install(self):
         requirements, ws = self.egg.working_set()
         pathlist=[f.location for f in ws]
-        print pathlist
+
+        with open('.project', 'w') as f:
+            f.writelines('''<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+    <name>%(name)s</name>
+    <comment></comment>
+    <projects>
+    </projects>
+    <buildSpec>
+    	<buildCommand>
+    		<name>org.python.pydev.PyDevBuilder</name>
+    		<arguments>
+    		</arguments>
+    	</buildCommand>
+    </buildSpec>
+    <natures>
+    	<nature>org.python.pydev.pythonNature</nature>
+    </natures>
+</projectDescription>''' % self.options)
+
+        with open('.pydevproject', 'w') as f:
+            f.writelines('''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse-pydev version="1.0"?><pydev_project>
+<pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
+<path>/%(name)s/%(src)s</path>
+</pydev_pathproperty>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">%(python_version)s</pydev_property>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">%(python_interpreter)s</pydev_property>
+<pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">''' % self.options)
+            for path in pathlist:
+                f.write('''
+<path>%s</path>''' % path)
+            f.writelines('''
+</pydev_pathproperty>
+</pydev_project>''')
         return ()
 
     update = install
-
-
-def remove_dir(path):
-    "removes recursively directory at path, if it exists"
-    if os.path.exists(path):
-        shutil.rmtree(path)

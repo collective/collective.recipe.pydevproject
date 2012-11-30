@@ -1,0 +1,61 @@
+Test
+====
+
+If we install the recipe with an egg `eggstub.main` that depends on another egg `eggstub.dep`,
+the resulting config should include both their paths::
+
+    >>> write('buildout.cfg',
+    ... """
+    ... [buildout]
+    ... parts = pydevproject
+    ... find-links = %(sample_buildout)s/eggs
+    ...
+    ... develop =
+    ...     %(test_dir)s/eggstub.main
+    ...     %(test_dir)s/eggstub.dep
+    ...
+    ... [pydevproject]
+    ... recipe = collective.recipe.pydevproject
+    ... name = MY_PROJECT_NAME
+    ... src = MY_SRC
+    ... python_version = python 2.7
+    ... python_interpreter = Default
+    ... eggs = eggstub.main
+    ... """ % globals())
+    >>> out = system(join('bin', 'buildout'))
+    >>> print out[out.find('Develop:'):]
+    Develop: '.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.main'
+    Develop: '.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.dep'
+    Installing pydevproject.
+    ...
+    >>> cat('.project')
+    <?xml version="1.0" encoding="UTF-8"?>
+    <projectDescription>
+        <name>MY_PROJECT_NAME</name>
+        <comment></comment>
+        <projects>
+        </projects>
+        <buildSpec>
+        	<buildCommand>
+        		<name>org.python.pydev.PyDevBuilder</name>
+        		<arguments>
+        		</arguments>
+        	</buildCommand>
+        </buildSpec>
+        <natures>
+        	<nature>org.python.pydev.pythonNature</nature>
+        </natures>
+    </projectDescription>
+    >>> cat('.pydevproject')
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <?eclipse-pydev version="1.0"?><pydev_project>
+    <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
+    <path>/MY_PROJECT_NAME/MY_SRC</path>
+    </pydev_pathproperty>
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.7</pydev_property>
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
+    <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
+    <path>.../collective.recipe.ropeproject/collective/recipe/ropeproject/tests/eggstub.main/src</path>
+    <path>.../collective.recipe.ropeproject/collective/recipe/ropeproject/tests/eggstub.dep/src</path>
+    </pydev_pathproperty>
+    </pydev_project>

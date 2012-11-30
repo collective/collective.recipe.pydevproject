@@ -32,4 +32,8 @@ def test_suite():
                                       setUp=setUp, tearDown=tearDown,
                                       optionflags=flags,
                                       ))
+    suite.append(doctest.DocFileSuite('src_is_not_external.txt', globs=globals(),
+                                      setUp=setUp, tearDown=tearDown,
+                                      optionflags=flags,
+                                      ))
     return unittest.TestSuite(suite)

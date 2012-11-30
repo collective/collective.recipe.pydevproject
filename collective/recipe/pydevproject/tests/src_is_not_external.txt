@@ -1,0 +1,51 @@
+Test
+====
+
+If we install the recipe with an egg `eggstub.main` that depends on another egg `eggstub.dep`.
+But now eggstub.main/src is configured as src folder, so it is ommited from the external dependencies::
+
+    >>> write('buildout.cfg',
+    ... """
+    ... [buildout]
+    ... parts = pydevproject
+    ... find-links = %(sample_buildout)s/eggs
+    ...
+    ... develop =
+    ...     eggstub.main
+    ...     %(test_dir)s/eggstub.dep
+    ...
+    ... [pydevproject]
+    ... recipe = collective.recipe.pydevproject
+    ... name = MY_PROJECT_NAME
+    ... src = eggstub.main/src
+    ... python_version = python 2.7
+    ... python_interpreter = Default
+    ... eggs = eggstub.main
+    ... """ % globals())
+
+    >>> out = system('cp -a %(test_dir)s/eggstub.main .' % globals())
+
+    >>> out = system(join('bin', 'buildout'))
+    >>> print out[out.find('Develop:'):]
+    Develop: '/.../sample-buildout/eggstub.main'
+    Develop: '/home/mazza/work/collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.dep'
+    Installing pydevproject.
+
+    >>> cat('.pydevproject')
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <?eclipse-pydev version="1.0"?><pydev_project>
+    <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
+    <path>/MY_PROJECT_NAME/eggstub.main/src</path>
+    </pydev_pathproperty>
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.7</pydev_property>
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
+    <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
+    <path>.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.dep/src</path>
+    <path>.../dist-packages</path>
+    </pydev_pathproperty>
+    </pydev_project>
+
+    >>> out = system('cat .pydevproject')
+    >>> 'eggstub.main' in out[out.find('PROJECT_EXTERNAL_SOURCE_PATH'):]
+    False
+

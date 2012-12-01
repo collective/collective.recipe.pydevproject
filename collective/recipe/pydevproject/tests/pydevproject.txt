@@ -59,6 +59,5 @@ the resulting config should include both their paths::
     <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
     <path>.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.main/src</path>
     <path>.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.dep/src</path>
-    <path>.../dist-packages</path>
     </pydev_pathproperty>
     </pydev_project>

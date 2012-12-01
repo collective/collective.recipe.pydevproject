@@ -41,7 +41,6 @@ But now eggstub.main/src is configured as src folder, so it is ommited from the 
     <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
     <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
     <path>.../collective.recipe.pydevproject/collective/recipe/pydevproject/tests/eggstub.dep/src</path>
-    <path>.../dist-packages</path>
     </pydev_pathproperty>
     </pydev_project>
 

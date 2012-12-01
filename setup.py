@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 name = "collective.recipe.pydevproject"
-version = '0.1'
+version = '0.2.dev0'
 
 read = lambda f: open(f).read()
 

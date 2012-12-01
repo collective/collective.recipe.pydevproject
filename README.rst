@@ -58,12 +58,12 @@ src
 python_version
   The combination of interpreter and grammar version. E.g. *python 2.7*
 python_interpreter
-  The interpreter name, as configured in the the Eclipse Preferences for PyDev. Usually *Default* is finey.
+  The interpreter name, as configured in the the Eclipse Preferences for PyDev. Usually *Default* is fine.
 
-  Remember first to register at least one interpreter in Eclipse, e.g. in ``Window > Preferences > PyDev > Interpreter - Python > New...``.
+  Remember to register at least one interpreter in Eclipse before using your project. That can be done in ``Window > Preferences > PyDev > Interpreter - Python > New...``.
 eggs
   The eggs that will be listed as external dependencies.
-  You don't need to include transitive dependencies, as they are calculated automatically.
+  You don't need to include transitive dependencies. This is done automatically.
 
 Source
 ------

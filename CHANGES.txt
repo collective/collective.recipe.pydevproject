@@ -1,7 +1,7 @@
 0.2 (unreleased)
 ================
 
-- Nothing changed yet.
+- Added support for extra-paths (additional Python paths)
 
 
 0.1 (2012-12-01)

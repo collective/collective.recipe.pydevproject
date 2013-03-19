@@ -9,6 +9,7 @@ class Recipe:
         self.options = options
         self.src_absolute_path = '%s/%s' % (buildout['buildout']['directory'], buildout[name]['src'])
         self.egg = zc.recipe.egg.Scripts(buildout, name, options)
+        self.extra_paths = options['extra-paths'].split('\n')
 
     def install(self):
         requirements, ws = self.egg.working_set()
@@ -38,18 +39,19 @@ class Recipe:
 
         with open('.pydevproject', 'w') as f:
             f.writelines('''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?eclipse-pydev version="1.0"?><pydev_project>
-<pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
-<path>/%(name)s/%(src)s</path>
-</pydev_pathproperty>
-<pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">%(python_version)s</pydev_property>
-<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">%(python_interpreter)s</pydev_property>
-<pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">''' % self.options)
-            for path in external_deps_paths:
+<?eclipse-pydev version="1.0"?>
+<pydev_project>
+    <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
+        <path>/%(name)s/%(src)s</path>
+    </pydev_pathproperty>
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">%(python_version)s</pydev_property>
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">%(python_interpreter)s</pydev_property>
+    <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">''' % self.options)
+            for path in external_deps_paths + self.extra_paths:
                 f.write('''
-<path>%s</path>''' % path)
+        <path>%s</path>''' % path)
             f.writelines('''
-</pydev_pathproperty>
+    </pydev_pathproperty>
 </pydev_project>''')
         return ()
 

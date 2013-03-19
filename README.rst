@@ -59,6 +59,8 @@ python_version
   The combination of interpreter and grammar version. E.g. *python 2.7*
 python_interpreter
   The interpreter name, as configured in the the Eclipse Preferences for PyDev. Usually *Default* is fine.
+extra-paths
+  Extra paths to add to the Python path. Each path should be on a separate line.
 
   Remember to register at least one interpreter in Eclipse before using your project. That can be done in ``Window > Preferences > PyDev > Interpreter - Python > New...``.
 eggs

@@ -55,9 +55,9 @@ name
   The project name. This is just for Eclipse and can be anything you want.
 src
   The source folder, relative to the root of the project. Usually *src*. *(TODO: get this from ${buildout:develop} and setup.py)*
-python_version
+python-version
   The combination of interpreter and grammar version. E.g. *python 2.7*
-python_interpreter
+python-interpreter
   The interpreter name, as configured in the the Eclipse Preferences for PyDev. Usually *Default* is fine.
 extra-paths
   Extra paths to add to the Python path. Each path should be on a separate line.

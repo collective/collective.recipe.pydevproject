@@ -10,6 +10,13 @@ class Recipe:
         self.src_absolute_path = '%s/%s' % (buildout['buildout']['directory'], buildout[name]['src'])
         self.egg = zc.recipe.egg.Scripts(buildout, name, options)
         self.extra_paths = options['extra-paths'].split('\n')
+        if options.get('python_version', None) and not options.get('python-version', None):
+            print("python_version is deprecated, use python-version instead.")
+            self.options['python-version'] = options['python_version']
+        if options.get('python_interpreter', None) and not options.get('python-interpreter', None):
+            print("python_interpreter is deprecated, use python-interpreter instead.")
+            self.options['python-interpreter'] = options['python_interpreter']
+
 
     def install(self):
         requirements, ws = self.egg.working_set()
@@ -44,8 +51,8 @@ class Recipe:
     <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
         <path>/%(name)s/%(src)s</path>
     </pydev_pathproperty>
-    <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">%(python_version)s</pydev_property>
-    <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">%(python_interpreter)s</pydev_property>
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">%(python-version)s</pydev_property>
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">%(python-interpreter)s</pydev_property>
     <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">''' % self.options)
             for path in external_deps_paths + self.extra_paths:
                 f.write('''

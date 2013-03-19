@@ -1,7 +1,8 @@
 0.2 (unreleased)
 ================
 
-- Added support for extra-paths (additional Python paths)
+- Added support for extra-paths (additional Python paths).
+- Deprecated the use of underscores in options.
 
 
 0.1 (2012-12-01)

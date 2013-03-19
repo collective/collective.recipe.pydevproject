@@ -43,9 +43,12 @@ Add your recipe configuration to ``buildout.cfg`` and include it in ``${buildout
     recipe = collective.recipe.pydevproject
     name = my_project_name
     src = src
-    python_version = python 2.7
-    python_interpreter = Default
+    python-version = python 2.7
+    python-interpreter = Default
     eggs = any_egg_you_want
+    extra-paths =
+        /some/path
+        ${buildout:directory}/some/library
 
 Options
 -------
@@ -59,10 +62,10 @@ python-version
   The combination of interpreter and grammar version. E.g. *python 2.7*
 python-interpreter
   The interpreter name, as configured in the the Eclipse Preferences for PyDev. Usually *Default* is fine.
-extra-paths
-  Extra paths to add to the Python path. Each path should be on a separate line.
 
   Remember to register at least one interpreter in Eclipse before using your project. That can be done in ``Window > Preferences > PyDev > Interpreter - Python > New...``.
+extra-paths
+  Extra paths to add to the Python path. Each path should be on a separate line.
 eggs
   The eggs that will be listed as external dependencies.
   You don't need to include transitive dependencies. This is done automatically.

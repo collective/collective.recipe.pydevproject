@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import zc.buildout
 import zc.recipe.egg
+import copy
+import glob
 
 
 class Recipe:
@@ -9,7 +11,7 @@ class Recipe:
         self.options = options
         self.src_absolute_path = '%s/%s' % (buildout['buildout']['directory'], buildout[name]['src'])
         self.egg = zc.recipe.egg.Scripts(buildout, name, options)
-        self.extra_paths = options['extra-paths'].split('\n')
+        self.extra_paths = options['extra-paths'].split()
         if options.get('python_version', None) and not options.get('python-version', None):
             print("python_version is deprecated, use python-version instead.")
             self.options['python-version'] = options['python_version']
@@ -24,6 +26,11 @@ class Recipe:
         # src should not be count as an external dependency
         if self.src_absolute_path in external_deps_paths:
             external_deps_paths.remove(self.src_absolute_path)
+
+        for path in copy.copy(self.extra_paths):
+            if '*' in path:
+                self.extra_paths.remove(path)
+                self.extra_paths += glob.glob(path)
 
         with open('.project', 'w') as f:
             f.writelines('''<?xml version="1.0" encoding="UTF-8"?>

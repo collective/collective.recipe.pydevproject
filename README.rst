@@ -49,6 +49,7 @@ Add your recipe configuration to ``buildout.cfg`` and include it in ``${buildout
     extra-paths =
         /some/path
         ${buildout:directory}/some/library
+        ${buildout:directory}/lib/*
 
 Options
 -------
@@ -65,7 +66,7 @@ python-interpreter
 
   Remember to register at least one interpreter in Eclipse before using your project. That can be done in ``Window > Preferences > PyDev > Interpreter - Python > New...``.
 extra-paths
-  Extra paths to add to the Python path. Each path should be on a separate line.
+  Extra paths to add to the Python path. Each path should be on a separate line. Paths may contain wildcards (*), these are evaluated upon install.
 eggs
   The eggs that will be listed as external dependencies.
   You don't need to include transitive dependencies. This is done automatically.

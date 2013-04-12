@@ -42,7 +42,9 @@ Add your recipe configuration to ``buildout.cfg`` and include it in ``${buildout
     [pydevproject]
     recipe = collective.recipe.pydevproject
     name = my_project_name
-    src = src
+    src =
+        src
+        test
     python-version = python 2.7
     python-interpreter = Default
     eggs = any_egg_you_want
@@ -58,7 +60,7 @@ These match the options of a PyDev Project.
 name
   The project name. This is just for Eclipse and can be anything you want.
 src
-  The source folder, relative to the root of the project. Usually *src*. *(TODO: get this from ${buildout:develop} and setup.py)*
+  The source folders, relative to the root of the project. Usually *src*. *(TODO: get this from ${buildout:develop} and setup.py)*
 python-version
   The combination of interpreter and grammar version. E.g. *python 2.7*
 python-interpreter

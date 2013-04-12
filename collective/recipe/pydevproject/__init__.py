@@ -3,6 +3,7 @@ import zc.buildout
 import zc.recipe.egg
 import copy
 import glob
+import xml.etree.ElementTree as ET
 
 
 class Recipe:
@@ -32,41 +33,36 @@ class Recipe:
                 self.extra_paths.remove(path)
                 self.extra_paths += glob.glob(path)
 
-        with open('.project', 'w') as f:
-            f.writelines('''<?xml version="1.0" encoding="UTF-8"?>
-<projectDescription>
-    <name>%(name)s</name>
-    <comment></comment>
-    <projects>
-    </projects>
-    <buildSpec>
-    	<buildCommand>
-    		<name>org.python.pydev.PyDevBuilder</name>
-    		<arguments>
-    		</arguments>
-    	</buildCommand>
-    </buildSpec>
-    <natures>
-    	<nature>org.python.pydev.pythonNature</nature>
-    </natures>
-</projectDescription>''' % self.options)
+        project = ET.Element("projectDescription")
+        ET.SubElement(project, "name").text = self.options['name']
+        ET.SubElement(project, "comment")
+        ET.SubElement(project, "projects")
+        build_spec = ET.SubElement(project, "buildSpec")
+        build_cmd = ET.SubElement(build_spec, "buildCommand")
+        ET.SubElement(build_cmd, "name").text = "org.python.pydev.PyDevBuilder"
+        ET.SubElement(build_cmd, "arguments")
+        natures = ET.SubElement(project, "natures")
+        ET.SubElement(natures, "nature").text = "org.python.pydev.pythonNature"
+        ET.ElementTree(project).write('.project', "UTF-8")
 
-        with open('.pydevproject', 'w') as f:
-            f.writelines('''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?eclipse-pydev version="1.0"?>
-<pydev_project>
-    <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
-        <path>/%(name)s/%(src)s</path>
-    </pydev_pathproperty>
-    <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">%(python-version)s</pydev_property>
-    <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">%(python-interpreter)s</pydev_property>
-    <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">''' % self.options)
-            for path in external_deps_paths + self.extra_paths:
-                f.write('''
-        <path>%s</path>''' % path)
-            f.writelines('''
-    </pydev_pathproperty>
-</pydev_project>''')
+        # TODO: add header: "<?eclipse-pydev version="1.0"?>"
+        pydev_project = ET.Element("pydev_project")
+        path_property = ET.SubElement(pydev_project, "pydev_pathproperty")
+        path_property.attrib['name'] = "org.python.pydev.PROJECT_SOURCE_PATH"
+        for src in self.options['src'].split():
+            ET.SubElement(path_property, "path").text = \
+                "/{name}/{src}".format(name=self.options['name'], src=src)
+        py_version = ET.SubElement(pydev_project, "pydev_property",
+                                name="org.python.pydev.PYTHON_PROJECT_VERSION")
+        py_version.text = self.options['python-version']
+        py_interpreter = ET.SubElement(pydev_project, "pydev_property",
+                            name="org.python.pydev.PYTHON_PROJECT_INTERPRETER")
+        py_interpreter.text = self.options['python-interpreter']
+        libs = ET.SubElement(pydev_project, "pydev_pathproperty",
+                        name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH")
+        for path in external_deps_paths + self.extra_paths:
+            ET.SubElement(libs, "path").text = path
+        ET.ElementTree(pydev_project).write('.pydevproject', 'UTF-8')
         return ()
 
     update = install

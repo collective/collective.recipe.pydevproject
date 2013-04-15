@@ -4,6 +4,8 @@
 - Added support for extra-paths (additional Python paths).
 - Deprecated the use of underscores in options.
 - Added support for wildcards (*) in extra-paths.
+- Added support for multiple src paths.
+- Added support for project-references.
 
 
 0.1 (2012-12-01)

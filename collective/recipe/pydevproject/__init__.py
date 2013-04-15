@@ -36,7 +36,9 @@ class Recipe:
         project = ET.Element("projectDescription")
         ET.SubElement(project, "name").text = self.options['name']
         ET.SubElement(project, "comment")
-        ET.SubElement(project, "projects")
+        projects = ET.SubElement(project, "projects")
+        for project_ref in self.options.get('projects', '').split():
+            ET.SubElement(projects, "project").text = project_ref
         build_spec = ET.SubElement(project, "buildSpec")
         build_cmd = ET.SubElement(build_spec, "buildCommand")
         ET.SubElement(build_cmd, "name").text = "org.python.pydev.PyDevBuilder"

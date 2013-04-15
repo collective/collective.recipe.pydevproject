@@ -52,6 +52,7 @@ Add your recipe configuration to ``buildout.cfg`` and include it in ``${buildout
         /some/path
         ${buildout:directory}/some/library
         ${buildout:directory}/lib/*
+    projects = some-other-project
 
 Options
 -------
@@ -72,6 +73,8 @@ extra-paths
 eggs
   The eggs that will be listed as external dependencies.
   You don't need to include transitive dependencies. This is done automatically.
+projects
+  Referenced projects (by name) as they appear in Eclipse.
 
 Source
 ------
